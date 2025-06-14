@@ -1,23 +1,9 @@
 
-import { Send, Bot, User } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'bot';
-  timestamp: string;
-}
-
-interface ChatAreaProps {
-  isDarkMode: boolean;
-  messages: Message[];
-  onSendMessage: (message: string) => void;
-}
-
-const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
+const ChatArea = ({ isDarkMode, messages, onSendMessage }) => {
   const [inputMessage, setInputMessage] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -27,7 +13,7 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (inputMessage.trim()) {
       onSendMessage(inputMessage.trim());
@@ -35,7 +21,7 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
     }
   };
 
-  const formatTime = (timestamp: string) => {
+  const formatTime = (timestamp) => {
     return new Date(timestamp).toLocaleTimeString('fr-FR', {
       hour: '2-digit',
       minute: '2-digit'
@@ -51,9 +37,11 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <Bot className={`h-16 w-16 mx-auto mb-4 transition-colors duration-300 ${
+              <svg className={`h-16 w-16 mx-auto mb-4 transition-colors duration-300 ${
                 isDarkMode ? 'text-slate-600' : 'text-gray-300'
-              }`} />
+              }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
               <h3 className={`text-xl font-medium mb-2 transition-colors duration-300 ${
                 isDarkMode ? 'text-slate-300' : 'text-gray-600'
               }`}>
@@ -82,11 +70,15 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
                     : isDarkMode ? 'bg-slate-700' : 'bg-white border-2 border-gray-200'
                 }`}>
                   {message.sender === 'user' ? (
-                    <User className="h-4 w-4 text-white" />
+                    <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
                   ) : (
-                    <Bot className={`h-4 w-4 transition-colors duration-300 ${
+                    <svg className={`h-4 w-4 transition-colors duration-300 ${
                       isDarkMode ? 'text-slate-300' : 'text-gray-500'
-                    }`} />
+                    }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
                   )}
                 </div>
 
@@ -143,7 +135,9 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
           >
-            <Send className="h-5 w-5" />
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
           </button>
         </form>
       </div>
