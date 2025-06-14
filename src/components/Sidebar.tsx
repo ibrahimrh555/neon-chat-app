@@ -1,6 +1,5 @@
 
 import { MessageCircle, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
 
 interface Conversation {
   id: string;
@@ -29,7 +28,7 @@ const Sidebar = ({
   return (
     <div className={`w-80 border-r transition-colors duration-300 ${
       isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-gray-50 border-gray-200'
-    } flex flex-col h-screen`}>
+    } flex flex-col h-full`}>
       {/* Header - Fixed */}
       <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-slate-700">
         <button
@@ -46,7 +45,7 @@ const Sidebar = ({
       </div>
 
       {/* Conversations List - Scrollable */}
-      <div className="flex-1 flex flex-col min-h-0">
+      <div className="flex-1 overflow-hidden flex flex-col">
         <div className={`flex-shrink-0 p-4 pb-2 text-sm font-medium transition-colors duration-300 ${
           isDarkMode ? 'text-slate-300' : 'text-gray-700'
         }`}>
