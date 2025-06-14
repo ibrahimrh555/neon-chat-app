@@ -188,7 +188,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen flex flex-col transition-colors duration-300 ${
+    <div className={`h-screen flex flex-col transition-colors duration-300 ${
       isDarkMode ? 'bg-slate-800' : 'bg-gray-100'
     }`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
