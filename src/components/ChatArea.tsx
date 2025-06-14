@@ -1,4 +1,5 @@
 
+import { Send, Bot, User } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 interface Message {
@@ -50,14 +51,9 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              {/* Bot Icon */}
-              <div className={`w-16 h-16 mx-auto mb-4 transition-colors duration-300 ${
+              <Bot className={`h-16 w-16 mx-auto mb-4 transition-colors duration-300 ${
                 isDarkMode ? 'text-slate-600' : 'text-gray-300'
-              }`}>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
+              }`} />
               <h3 className={`text-xl font-medium mb-2 transition-colors duration-300 ${
                 isDarkMode ? 'text-slate-300' : 'text-gray-600'
               }`}>
@@ -86,19 +82,11 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
                     : isDarkMode ? 'bg-slate-700' : 'bg-white border-2 border-gray-200'
                 }`}>
                   {message.sender === 'user' ? (
-                    <div className="w-4 h-4 text-white">
-                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
+                    <User className="h-4 w-4 text-white" />
                   ) : (
-                    <div className={`w-4 h-4 transition-colors duration-300 ${
+                    <Bot className={`h-4 w-4 transition-colors duration-300 ${
                       isDarkMode ? 'text-slate-300' : 'text-gray-500'
-                    }`}>
-                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
+                    }`} />
                   )}
                 </div>
 
@@ -155,12 +143,7 @@ const ChatArea = ({ isDarkMode, messages, onSendMessage }: ChatAreaProps) => {
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
           >
-            {/* Send Icon */}
-            <div className="w-5 h-5">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            </div>
+            <Send className="h-5 w-5" />
           </button>
         </form>
       </div>
