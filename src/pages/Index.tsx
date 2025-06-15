@@ -8,6 +8,12 @@ interface Message {
   text: string;
   sender: 'user' | 'bot';
   timestamp: string;
+  file?: {
+    name: string;
+    type: string;
+    size: number;
+    url: string;
+  };
 }
 
 interface Conversation {
@@ -72,21 +78,37 @@ const Index = () => {
     }
   };
 
-  const handleSendMessage = (messageText: string) => {
-    if (!activeConversationId) {
-      // Créer une nouvelle conversation si aucune n'est active
-      const newConversation = createNewConversation();
-      const userMessage: Message = {
-        id: `msg-${Date.now()}`,
-        text: messageText,
-        sender: 'user',
+  const handleSendMessage = (messageText: string, file?: File) => {
+    const createMessage = (text: string, sender: 'user' | 'bot', attachedFile?: File): Message => {
+      const message: Message = {
+        id: `msg-${Date.now()}-${Math.random()}`,
+        text,
+        sender,
         timestamp: new Date().toISOString()
       };
 
+      if (attachedFile) {
+        message.file = {
+          name: attachedFile.name,
+          type: attachedFile.type,
+          size: attachedFile.size,
+          url: URL.createObjectURL(attachedFile)
+        };
+      }
+
+      return message;
+    };
+
+    if (!activeConversationId) {
+      // Créer une nouvelle conversation si aucune n'est active
+      const newConversation = createNewConversation();
+      const userMessage = createMessage(messageText, 'user', file);
+
+      const conversationTitle = messageText || file?.name || 'Nouvelle conversation';
       const updatedConversation = {
         ...newConversation,
-        title: messageText.slice(0, 30) + (messageText.length > 30 ? '...' : ''),
-        lastMessage: messageText,
+        title: conversationTitle.slice(0, 30) + (conversationTitle.length > 30 ? '...' : ''),
+        lastMessage: messageText || `📎 ${file?.name}`,
         messages: [userMessage]
       };
 
@@ -94,40 +116,32 @@ const Index = () => {
       setActiveConversationId(updatedConversation.id);
 
       // Simuler la réponse du bot après un délai
-      setTimeout(() => {
-        const botResponse = getBotResponse(messageText);
-        const botMessage: Message = {
-          id: `msg-${Date.now()}`,
-          text: botResponse,
-          sender: 'bot',
-          timestamp: new Date().toISOString()
-        };
+      if (messageText) {
+        setTimeout(() => {
+          const botResponse = getBotResponse(messageText);
+          const botMessage = createMessage(botResponse, 'bot');
 
-        setConversations(prev => prev.map(conv => 
-          conv.id === updatedConversation.id 
-            ? {
-                ...conv,
-                lastMessage: botResponse,
-                timestamp: new Date().toISOString(),
-                messages: [...conv.messages, botMessage]
-              }
-            : conv
-        ));
-      }, 1000 + Math.random() * 2000);
+          setConversations(prev => prev.map(conv => 
+            conv.id === updatedConversation.id 
+              ? {
+                  ...conv,
+                  lastMessage: botResponse,
+                  timestamp: new Date().toISOString(),
+                  messages: [...conv.messages, botMessage]
+                }
+              : conv
+          ));
+        }, 1000 + Math.random() * 2000);
+      }
     } else {
       // Ajouter un message à la conversation existante
-      const userMessage: Message = {
-        id: `msg-${Date.now()}`,
-        text: messageText,
-        sender: 'user',
-        timestamp: new Date().toISOString()
-      };
+      const userMessage = createMessage(messageText, 'user', file);
 
       setConversations(prev => prev.map(conv => 
         conv.id === activeConversationId 
           ? {
               ...conv,
-              lastMessage: messageText,
+              lastMessage: messageText || `📎 ${file?.name}`,
               timestamp: new Date().toISOString(),
               messages: [...conv.messages, userMessage]
             }
@@ -135,26 +149,23 @@ const Index = () => {
       ));
 
       // Simuler la réponse du bot
-      setTimeout(() => {
-        const botResponse = getBotResponse(messageText);
-        const botMessage: Message = {
-          id: `msg-${Date.now()}`,
-          text: botResponse,
-          sender: 'bot',
-          timestamp: new Date().toISOString()
-        };
+      if (messageText) {
+        setTimeout(() => {
+          const botResponse = getBotResponse(messageText);
+          const botMessage = createMessage(botResponse, 'bot');
 
-        setConversations(prev => prev.map(conv => 
-          conv.id === activeConversationId 
-            ? {
-                ...conv,
-                lastMessage: botResponse,
-                timestamp: new Date().toISOString(),
-                messages: [...conv.messages, botMessage]
-              }
-            : conv
-        ));
-      }, 1000 + Math.random() * 2000);
+          setConversations(prev => prev.map(conv => 
+            conv.id === activeConversationId 
+              ? {
+                  ...conv,
+                  lastMessage: botResponse,
+                  timestamp: new Date().toISOString(),
+                  messages: [...conv.messages, botMessage]
+                }
+              : conv
+          ));
+        }, 1000 + Math.random() * 2000);
+      }
     }
   };
 
