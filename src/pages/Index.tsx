@@ -4,13 +4,28 @@ import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import ChatArea from '../components/ChatArea';
 
+interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: string;
+}
+
+interface Conversation {
+  id: string;
+  title: string;
+  lastMessage: string;
+  timestamp: string;
+  messages: Message[];
+}
+
 const Index = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [conversations, setConversations] = useState([]);
-  const [activeConversationId, setActiveConversationId] = useState(null);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
 
   // Simuler des réponses automatiques du bot
-  const getBotResponse = (userMessage) => {
+  const getBotResponse = (userMessage: string): string => {
     const responses = [
       "C'est une excellente question ! Laissez-moi y réfléchir...",
       "Je comprends votre point de vue. Voici ce que je pense...",
@@ -30,7 +45,7 @@ const Index = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const createNewConversation = () => {
+  const createNewConversation = (): Conversation => {
     const now = new Date().toISOString();
     return {
       id: `conv-${Date.now()}`,
@@ -47,22 +62,22 @@ const Index = () => {
     setActiveConversationId(newConversation.id);
   };
 
-  const handleSelectConversation = (id) => {
+  const handleSelectConversation = (id: string) => {
     setActiveConversationId(id);
   };
 
-  const handleDeleteConversation = (id) => {
+  const handleDeleteConversation = (id: string) => {
     setConversations(prev => prev.filter(conv => conv.id !== id));
     if (activeConversationId === id) {
       setActiveConversationId(null);
     }
   };
 
-  const handleSendMessage = (messageText) => {
+  const handleSendMessage = (messageText: string) => {
     if (!activeConversationId) {
       // Créer une nouvelle conversation si aucune n'est active
       const newConversation = createNewConversation();
-      const userMessage = {
+      const userMessage: Message = {
         id: `msg-${Date.now()}`,
         text: messageText,
         sender: 'user',
@@ -82,7 +97,7 @@ const Index = () => {
       // Simuler la réponse du bot après un délai
       setTimeout(() => {
         const botResponse = getBotResponse(messageText);
-        const botMessage = {
+        const botMessage: Message = {
           id: `msg-${Date.now()}`,
           text: botResponse,
           sender: 'bot',
@@ -102,7 +117,7 @@ const Index = () => {
       }, 1000 + Math.random() * 2000);
     } else {
       // Ajouter un message à la conversation existante
-      const userMessage = {
+      const userMessage: Message = {
         id: `msg-${Date.now()}`,
         text: messageText,
         sender: 'user',
@@ -123,7 +138,7 @@ const Index = () => {
       // Simuler la réponse du bot
       setTimeout(() => {
         const botResponse = getBotResponse(messageText);
-        const botMessage = {
+        const botMessage: Message = {
           id: `msg-${Date.now()}`,
           text: botResponse,
           sender: 'bot',
@@ -144,7 +159,7 @@ const Index = () => {
     }
   };
 
-  const getCurrentMessages = () => {
+  const getCurrentMessages = (): Message[] => {
     if (!activeConversationId) return [];
     const activeConversation = conversations.find(conv => conv.id === activeConversationId);
     return activeConversation?.messages || [];
@@ -153,7 +168,7 @@ const Index = () => {
   // Créer une conversation d'exemple au premier chargement
   useEffect(() => {
     if (conversations.length === 0) {
-      const exampleConversation = {
+      const exampleConversation: Conversation = {
         id: 'example-conv',
         title: 'Bienvenue ! Comment puis-je vous aider ?',
         lastMessage: 'Bonjour ! Je suis votre assistant ChatBot.',
@@ -174,7 +189,7 @@ const Index = () => {
 
   return (
     <div className={`h-screen flex flex-col transition-colors duration-300 ${
-      isDarkMode ? 'bg-slate-800' : 'bg-gradient-to-br from-gray-50 to-gray-100'
+      isDarkMode ? 'bg-slate-800' : 'bg-gray-100'
     }`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
