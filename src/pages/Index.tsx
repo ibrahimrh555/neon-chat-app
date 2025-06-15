@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -188,7 +189,7 @@ const Index = () => {
 
   return (
     <div className={`h-screen flex flex-col transition-colors duration-300 ${
-      isDarkMode ? 'bg-slate-800' : 'bg-gradient-to-br from-gray-50 to-gray-100'
+      isDarkMode ? 'bg-slate-800' : 'bg-gray-100'
     }`}>
       <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       

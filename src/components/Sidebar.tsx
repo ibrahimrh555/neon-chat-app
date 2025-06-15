@@ -27,18 +27,16 @@ const Sidebar = ({
 }: SidebarProps) => {
   return (
     <div className={`w-80 border-r transition-colors duration-300 ${
-      isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-gray-50/30 border-gray-100'
+      isDarkMode ? 'bg-slate-900 border-slate-700' : 'bg-gray-50 border-gray-200'
     } flex flex-col h-full`}>
       {/* Header - Fixed */}
-      <div className={`flex-shrink-0 p-4 border-b transition-colors duration-300 ${
-        isDarkMode ? 'border-slate-700' : 'border-gray-100'
-      }`}>
+      <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-slate-700">
         <button
           onClick={onNewConversation}
           className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors duration-300 ${
             isDarkMode 
               ? 'bg-orange-600 hover:bg-orange-700 text-white' 
-              : 'bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white shadow-sm'
+              : 'bg-orange-500 hover:bg-orange-600 text-white'
           }`}
         >
           <Plus className="h-5 w-5" />
@@ -49,7 +47,7 @@ const Sidebar = ({
       {/* Conversations List - Scrollable */}
       <div className="flex-1 overflow-hidden flex flex-col">
         <div className={`flex-shrink-0 p-4 pb-2 text-sm font-medium transition-colors duration-300 ${
-          isDarkMode ? 'text-slate-300' : 'text-gray-600'
+          isDarkMode ? 'text-slate-300' : 'text-gray-700'
         }`}>
           Historique des conversations
         </div>
@@ -57,7 +55,7 @@ const Sidebar = ({
         <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2">
           {conversations.length === 0 ? (
             <div className={`text-center py-8 transition-colors duration-300 ${
-              isDarkMode ? 'text-slate-400' : 'text-gray-400'
+              isDarkMode ? 'text-slate-400' : 'text-gray-500'
             }`}>
               <MessageCircle className="h-12 w-12 mx-auto mb-3 opacity-50" />
               <p className="text-sm">Aucune conversation</p>
@@ -67,14 +65,14 @@ const Sidebar = ({
               <div
                 key={conversation.id}
                 onClick={() => onSelectConversation(conversation.id)}
-                className={`group p-3 rounded-lg cursor-pointer transition-all duration-300 ${
+                className={`group p-3 rounded-lg cursor-pointer transition-colors duration-300 ${
                   activeConversationId === conversation.id
                     ? isDarkMode 
                       ? 'bg-orange-600 text-white' 
-                      : 'bg-gradient-to-r from-orange-50 to-orange-100 text-orange-800 border border-orange-200 shadow-sm'
+                      : 'bg-orange-100 text-orange-900 border-orange-200'
                     : isDarkMode
                       ? 'hover:bg-slate-800 text-slate-300'
-                      : 'hover:bg-white text-gray-700 hover:shadow-sm border border-transparent hover:border-gray-200'
+                      : 'hover:bg-white text-gray-700 hover:shadow-sm'
                 }`}
               >
                 <div className="flex items-start justify-between">
@@ -84,14 +82,14 @@ const Sidebar = ({
                     </h3>
                     <p className={`text-xs mt-1 truncate transition-colors duration-300 ${
                       activeConversationId === conversation.id
-                        ? isDarkMode ? 'text-orange-100' : 'text-orange-600'
+                        ? 'text-orange-100'
                         : isDarkMode ? 'text-slate-400' : 'text-gray-500'
                     }`}>
                       {conversation.lastMessage}
                     </p>
                     <p className={`text-xs mt-1 transition-colors duration-300 ${
                       activeConversationId === conversation.id
-                        ? isDarkMode ? 'text-orange-200' : 'text-orange-500'
+                        ? 'text-orange-200'
                         : isDarkMode ? 'text-slate-500' : 'text-gray-400'
                     }`}>
                       {conversation.timestamp}
@@ -103,7 +101,7 @@ const Sidebar = ({
                       onDeleteConversation(conversation.id);
                     }}
                     className={`opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 ${
-                      isDarkMode ? 'hover:bg-slate-700 text-slate-400' : 'hover:bg-gray-100 text-gray-400 hover:text-red-500'
+                      isDarkMode ? 'hover:bg-slate-700 text-slate-400' : 'hover:bg-gray-200 text-gray-500'
                     }`}
                   >
                     <Trash2 className="h-4 w-4" />
